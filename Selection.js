@@ -10,6 +10,7 @@ Shuttler.Selection = function(selects, sides, options) {
 	
 	this._selects = selects;
 	
+	if (!sides) var sides = {};
 	var contextSides = Shuttler.GraphSidesSchema.newContext();
 	Shuttler.GraphSidesSchema.clean(sides);
 	if (!contextSides.validate(sides))
