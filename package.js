@@ -1,6 +1,6 @@
 Package.describe({
   name: 'shuttler:selection',
-  version: '0.0.2',
+  version: '0.0.3',
   summary: 'Selection in the graphs.',
   git: 'https://github.com/shuttler/meteor-selection.git',
   documentation: 'README.md'
@@ -24,6 +24,7 @@ Package.onUse(function(api) {
   api.addFiles('byPaths.js');
   api.addFiles('actions.js');
   api.addFiles('watchers.js');
+  api.addFiles('protection.js');
   
   api.export('Shuttler');
 });

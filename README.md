@@ -106,6 +106,11 @@ find all paths from source/target
 Document)) => this
 find all selected from source/target
 
+#### .eachSelectorBy
+> (side: 'source'/'target', object: Document, handler: .call(this, selector:
+Document)) => this
+find all selectors from source/target
+
 #### .eachDirectionsOfPath
 > (directions: 'sources'/'targets', path: Document, handler: .call(this, object:
 Document, path: Document, graph: Mongo.Collection)) => this
@@ -154,7 +159,8 @@ insert each path.sources selection to target
 #### .selectTarget
 > (target: Document) => this
 
-find all paths from target and insert to target each path.sources selection
+find all paths to target and insert to target each path.sources selection
+find all selectors on target and insert selected
 
 #### .unselectBySelector
 > (selector: Document) => this
@@ -171,6 +177,11 @@ clear path from any selected
 
 remove all with .prev: selected._id
 
+#### .unselectTarget
+> (target: Document) => this
+
+clear target from any selected
+
 #### .isSelected
 > (selected: Document) => Boolean
 
@@ -180,11 +191,11 @@ remove all with .prev: selected._id
 ### Restrictions
 
 #### selection
-> (target: Document, prev: Document, from?: Ref, path?: Document, selection?: Shuttle.Selection)
+> (target: Document, prev: Document, from?: Ref, path?: Document, selector: String, selection?: Shuttle.Selection)
 
 ```js
 graph.deny({
-    selection: function(target, prev, from, path, selection) {
+    selection: function(target, prev, from, path, selector, selection) {
         return false;
     }
 });
@@ -215,3 +226,10 @@ Actions will operate on the basis of the registered paths.
 > Mongo.Collection
 
 #### [Shuttler.GraphDirectionsSchema](https://github.com/meteor-shuttler/graphs#shuttlergraphdirectionsschema)
+
+### Protection
+
+#### .recursionProtection
+> () => this
+
+enables protection against recursion

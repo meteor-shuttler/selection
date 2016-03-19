@@ -47,6 +47,22 @@ Shuttler.Selection.prototype.eachSelectedBy = function(side, object, handler) {
 	return this;
 };
 
+// найти все селекторы от сорса/таргета
+// find all selectors from source/target
+// .eachSelectorBy(side: 'source'/'target', object: Document, handler: .call(this, selector: Document)) => this
+Shuttler.Selection.prototype.eachSelectorBy = function(side, object, handler) {
+	var selection = this;
+	selection._selects.find(
+		lodash.merge(
+			object.Ref('_'+selection._sides[side]),
+			this._options.selectorQuery.call(this)
+		)
+	).forEach(function(selector) {
+		handler.call(selection, selector);
+	});
+	return this;
+};
+
 // найти все сорсы/таргеты пути (согласно directions)
 // find all sources/targets of path
 // .eachDirectionsOfPath(directions: 'sources'/'targets', path: Document, handler: .call(this, object: Document, path: Document, graph: Mongo.Collection)) => this
@@ -62,7 +78,7 @@ Shuttler.Selection.prototype.eachDirectionsOfPath = function(directions, path, h
 // insert first selected to selector
 // .selectBySelector(selector: Document) => this
 Shuttler.Selection.prototype.selectBySelector = function(selector) {
-	if (this._selects.checkRestrictions('selection', selector[this._sides.target](), selector, undefined, undefined, this)) {
+	if (this._selects.checkRestrictions('selection', selector[this._sides.target](), selector, undefined, undefined, selector._id, this)) {
 		this._selects.insert({
 			['_'+this._sides.target]: selector['_'+this._sides.target],
 			['_'+this._sides.source]: selector['_'+this._sides.source],
@@ -137,7 +153,8 @@ Shuttler.Selection.prototype.selectInPath = function(path) {
 Shuttler.Selection.prototype.selectTargetInPathBySelected = function(target, path, from, selected) {
 	var from = Shuttler.Ref.new(from);
 	var selection = this;
-	if (this._selects.checkRestrictions('selection', target, selected, from, path, this)) {
+	var selector = selection.getSelector(selected);
+	if (this._selects.checkRestrictions('selection', target, selected, from, path, selector, this)) {
 		this._selects.insert({
 			['_'+this._sides.target]: target.Ref(),
 			['_'+this._sides.source]: selected['_'+this._sides.source],
@@ -145,7 +162,7 @@ Shuttler.Selection.prototype.selectTargetInPathBySelected = function(target, pat
 				from: from,
 				path: path.Ref(),
 				prev: selected._id,
-				selector: selection.getSelector(selected)
+				selector: selector
 			}
 		});
 	}
@@ -166,12 +183,17 @@ Shuttler.Selection.prototype.selectTargetInPath = function(target, path) {
 };
 
 // выделить таргет по всем путям всеми доступными выделениями
-// find all paths from target and insert to target each path.sources selection
+// выделить таргет от селекторов на нём
+// find all paths to target and insert to target each path.sources selection
+// find all selectors on target and insert selected
 // .selectTarget(target: Document) => this
 Shuttler.Selection.prototype.selectTarget = function(target) {
 	var selection = this;
 	this.eachPathsBy('targets', target, function(path) {
 		this.selectTargetInPath(target, path);
+	});
+	this.eachSelectorBy('target', target, function(selector) {
+		this.selectBySelector(selector);
 	});
 	return this;
 };
@@ -228,6 +250,16 @@ Shuttler.Selection.prototype.unselectByPrevSelected = function(selected) {
 	this._selects.remove({
 		[this._options.selectedField+'.selector']: selected[this._options.selectedField].selector,
 		[this._options.selectedField+'.prev']: selected._id
+	});
+	return this;
+};
+
+// убрать все выделения
+// clear target from any selected
+// .unselectTarget(target: Document) => this
+Shuttler.Selection.prototype.unselectTarget = function(target) {
+	this.eachSelectedBy('target', target, function(selected) {
+		this._selects.remove(selected._id);
 	});
 	return this;
 };
