@@ -12,6 +12,19 @@ meteor add shuttler:selection
 * [shuttler:ref](https://github.com/meteor-shuttler/ref)
 * [shuttler:graphs](https://github.com/meteor-shuttler/graphs)
 
+## Example
+
+```js
+var paths = new Mongo.Collection('paths');
+paths.attachGraph();
+
+var select = new Mongo.Collection('select');
+select.attachGraph();
+var selection = Shuttler.Selection(select, { source: 'source' })
+	.byPaths(paths, { sources: ['source'], targets: ['target'] })
+	.watchSelections().watchPaths(paths)
+```
+
 ## Documentation
 
 ### Selection

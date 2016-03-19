@@ -18,7 +18,7 @@ Shuttler.Selection.prototype.eachPathsBy = function(directions, object, handler)
 		lodash.each(_path.directions[directions], function(direction) {
 			if (
 				direction == 'link' // object can be a path
-				&& object.Ref().collection == _path.graph._name // object in path collection
+				&& object.Ref().collection == _path.graph._ref // object in path collection
 			) {
 				handler.call(this, object, direction, _path.graph);
 			} else { // find path as path.(source/target)
@@ -87,7 +87,7 @@ Shuttler.Selection.prototype.selectBySelected = function(selected) {
 Shuttler.Selection.prototype.selectFromSourceBySelected = function(source, selected) {
 	var selection = this;
 	this.eachPathsBy('sources', source, function(path, pathDirection, graph) {
-		lodash.each(this._paths[graph._name].directions.targets, function(direction) {
+		lodash.each(this._paths[graph._ref].directions.targets, function(direction) {
 			selection.selectTargetInPathBySelected(
 				Shuttler.getDocumentByDirection(direction, path),
 				path, Shuttler.getRefByDirection(pathDirection, path),

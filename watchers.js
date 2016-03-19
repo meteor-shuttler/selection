@@ -35,10 +35,10 @@ Shuttler.Selection.prototype.watchPaths = function(paths) {
 	var selection = this;
 	
 	if (!(paths instanceof Mongo.Collection) || !paths.isGraph)
-		throw new Meteor.Error('Collection '+paths._name+' is not a graph.');
+		throw new Meteor.Error('Collection '+paths._ref+' is not a graph.');
 	
-	if (!(paths._name in this._paths))
-		throw new Meteor.Error('Collection '+paths._name+' is defined as this selection paths.');
+	if (!(paths._ref in this._paths))
+		throw new Meteor.Error('Collection '+paths._ref+' is defined as this selection paths.');
 	
 	paths.after.link(function(userId, unpathed, pathed, fieldNames, modifier, options) {
 		var pathed = paths._transform(pathed);

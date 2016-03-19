@@ -6,7 +6,7 @@ Shuttler.Selection = function(selects, sides, options) {
 		return new Shuttler.Selection(selects, sides);
 		
 	if (!(selects instanceof Mongo.Collection) || !selects.isGraph)
-		throw new Meteor.Error('Collection '+selects._name+' is not a graph.');
+		throw new Meteor.Error('Collection '+selects._ref+' is not a graph.');
 	
 	this._selects = selects;
 	
