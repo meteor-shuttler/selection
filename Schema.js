@@ -30,7 +30,7 @@ Shuttler.Selection.OptionsSchema = new SimpleSchema({
 		type: Function,
 		optional: true,
 		defaultValue: function() {
-			return { [this._options.selectedField]: { $exists: false } };
+			return { [this.selectedField]: { $exists: false } };
 		}
 	},
 	isSelected: {
@@ -44,7 +44,7 @@ Shuttler.Selection.OptionsSchema = new SimpleSchema({
 		type: Function,
 		optional: true,
 		defaultValue: function() {
-			return { [this._options.selectedField]: { $exists: true } };
+			return { [this.selectedField]: { $exists: true } };
 		}
 	},
 	selectedField: {
