@@ -35,3 +35,9 @@ Shuttler.Selection = function(selects, sides, options) {
 	
 	this._paths = {};
 };
+
+Shuttler.Selection.prototype.isSelector = function() { return this._options.isSelector.apply(this, arguments); };
+Shuttler.Selection.prototype.selectorQuery = function() { return this._options.selectorQuery.apply(this, arguments); };
+Shuttler.Selection.prototype.isSelected = function() { return this._options.isSelected.apply(this, arguments); };
+Shuttler.Selection.prototype.selectedQuery = function() { return this._options.selectedQuery.apply(this, arguments); };
+Shuttler.Selection.prototype.selectedField = function() { return this._options.selectedField.apply(this, arguments); };
