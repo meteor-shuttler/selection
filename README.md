@@ -1,5 +1,7 @@
 # Selection
 
+[Examples](http://meteor-shuttler.herokuapp.com/selection) [GitHub](https://github.com/meteor-shuttler/selection) [Atmosphere.js](atmospherejs.com/shuttler/selection)
+
 Link in a graph as a property. Multiple, controlled, atomically, properties inheritable on graphs.
 
 ## Install
