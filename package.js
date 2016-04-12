@@ -1,6 +1,6 @@
 Package.describe({
   name: 'shuttler:selection',
-  version: '0.0.8',
+  version: '0.0.9',
   summary: 'Selection in the graphs.',
   git: 'https://github.com/meteor-shuttler/selection.git',
   documentation: 'README.md'

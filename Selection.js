@@ -3,7 +3,7 @@ Shuttler.Selection = function(selects, sides, options) {
 	var selection = this;
 	
 	if (!(this instanceof Shuttler.Selection))
-		return new Shuttler.Selection(selects, sides);
+		return new Shuttler.Selection(selects, sides, options);
 		
 	if (!(selects instanceof Mongo.Collection) || !selects.isGraph)
 		throw new Meteor.Error('Collection '+selects._ref+' is not a graph.');
